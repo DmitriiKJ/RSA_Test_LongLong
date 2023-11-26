@@ -172,7 +172,7 @@ KeyPair KeyGen()
     return { {e, n}, {d, n} };
 }
 
-long long sigт(long long message, PrivateKey k) 
+long long sign(long long message, PrivateKey k) 
 {
     return modPow(message, k.exponent, k.modulus);
 }
