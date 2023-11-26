@@ -172,20 +172,20 @@ KeyPair KeyGen()
     return { {e, n}, {d, n} };
 }
 
-long long encrypt(long long message, PublicKey k) 
+long long sign(long long message, PrivateKey k) 
 {
     return modPow(message, k.exponent, k.modulus);
 }
 
 
-long long decrypt(long long signature, PrivateKey k)
+long long verify(long long signature, PublicKey k)
 {
     return modPow(signature, k.exponent, k.modulus);
 }
 
-bool checkSignature(long long signature, long long message, PrivateKey k)
+bool checkSignature(long long signature, long long message, PublicKey k)
 {
-    if (decrypt(signature, k) == message) return true;
+    if (verify(signature, k) == message) return true;
     else return false;
 }
 
@@ -197,13 +197,13 @@ int main()
     long long message = 747257;
     cout << "Message: " << message << endl;
 
-    long long signature = encrypt(message, keyPair.publicKey);
+    long long signature = sign(message, keyPair.privateKey);
     cout << "Encrypted: " << signature << endl;
 
-    long long decryptedMessage = decrypt(signature, keyPair.privateKey);
+    long long decryptedMessage = verify(signature, keyPair.publicKey);
     cout << "Decrypted: " << decryptedMessage << endl;
 
-    if (checkSignature(signature, message, keyPair.privateKey))
+    if (checkSignature(signature, message, keyPair.publicKey))
     {
         cout << "Signature is correct!" << endl;
     }
